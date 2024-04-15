@@ -1,0 +1,110 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  java21-test
+
+  Sample SAM Template for java21-test
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 20
+    MemorySize: 512
+    Tracing: Active
+    CodeUri: target/NormaalProject-1.0-SNAPSHOT.jar
+    Runtime: java21
+    Environment:
+      Variables:
+        PRODUCT_TABLE_NAME: !Ref ProductsTable
+  Api:
+    TracingEnabled: true
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: Normaal project voor opstartopties
+    Description: coole  opstart project
+    Author: Dyllan
+    SpdxLicenseId: Apache-2.0
+    Labels: ['tests']
+    SemanticVersion: 1.0.0
+
+Resources:
+  MyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Name: Normaal Project voor Opstarttijd API
+
+  PutProductFunctionX86:
+    Type: AWS::Serverless::Function
+    Properties:
+      AutoPublishAlias: live
+      Architectures:
+        - x86_64
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Handler: nl.dyllan.PutProduct::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        PutRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products/x86/{id}
+            Method: put
+
+  PutProductFunctionSnapStart:
+    Type: AWS::Serverless::Function
+    Properties:
+      AutoPublishAlias: live
+      Architectures:
+        - x86_64
+      SnapStart:
+        ApplyOn: PublishedVersions
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Handler: nl.dyllan.PutProduct::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        PutRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products/snap/{id}
+            Method: put
+      VersionDescription: cooleversie
+
+  PutProductFunctionARM:
+    Type: AWS::Serverless::Function
+    Properties:
+      Architectures:
+        - arm64
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Handler: nl.dyllan.PutProduct::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        PutRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products/arm/{id}
+            Method: put
+
+  ProductsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: 'PK'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'PK'
+          KeyType: 'HASH'
+      BillingMode: PAY_PER_REQUEST
+
+Outputs:
+  Api:
+    Description: "API Gateway endpoint URL for Prod stage for Dagger sample function"
+    Value: !Sub "https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/prod"

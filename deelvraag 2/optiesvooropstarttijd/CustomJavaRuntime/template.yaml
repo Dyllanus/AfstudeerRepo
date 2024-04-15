@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+
+  ItemTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: 'PK'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'PK'
+          KeyType: 'HASH'
+      BillingMode: PAY_PER_REQUEST
+
+  Java21RuntimeLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: layer.zip
+
+  PutProductFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Tracing: Active
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Runtime: provided.al2
+      Handler: nl.dyllan.PutProduct::handleRequest
+      Timeout: 60
+      MemorySize: 512
+      CodeUri: lambda-app.zip
+      Environment:
+        Variables:
+          PRODUCT_TABLE_NAME: !Ref ItemTable
+      Policies:
+        - DynamoDBWritePolicy:
+            TableName: !Ref ItemTable
+      Layers:
+        - !Ref Java21RuntimeLayer
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /products/{id}
+            Method: put
+
+Outputs:
+  ApiEndpoint:
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"

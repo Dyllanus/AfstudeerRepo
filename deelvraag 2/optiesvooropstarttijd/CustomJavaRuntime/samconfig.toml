@@ -1,0 +1,8 @@
+version = 0.1
+[default.deploy.parameters]
+stack_name = "custom-java21-runtime"
+resolve_s3 = true
+s3_prefix = "custom-java21-runtime"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []

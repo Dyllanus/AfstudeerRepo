@@ -1,0 +1,161 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  java21-test
+
+  Sample SAM Template for java21-test
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 20
+    Tracing: Active
+    CodeUri: target/NormaalProject-1.0-SNAPSHOT.jar
+    Runtime: java21
+    Environment:
+      Variables:
+        PRODUCT_TABLE_NAME: !Ref ProductsTable
+  Api:
+    TracingEnabled: true
+
+Resources:
+  MyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Name: API voor opstarttijd memory allocation
+
+  PutProductFunction128MB:
+    Type: AWS::Serverless::Function
+    Properties:
+      MemorySize: 128
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Handler: nl.dyllan.PutProduct::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        PutRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products/128/{id}
+            Method: put
+
+  PutProductFunction256MB:
+    Type: AWS::Serverless::Function
+    Properties:
+      MemorySize: 256
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Handler: nl.dyllan.PutProduct::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        PutRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products/256/{id}
+            Method: put
+
+  PutProductFunction512MB:
+    Type: AWS::Serverless::Function
+    Properties:
+      MemorySize: 512
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Handler: nl.dyllan.PutProduct::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        PutRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products/512/{id}
+            Method: put
+
+  PutProductFunction756MB:
+    Type: AWS::Serverless::Function
+    Properties:
+      MemorySize: 756
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Handler: nl.dyllan.PutProduct::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        PutRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products/756/{id}
+            Method: put
+
+  PutProductFunction1024MB:
+    Type: AWS::Serverless::Function
+    Properties:
+      MemorySize: 1024
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Handler: nl.dyllan.PutProduct::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        PutRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products/1024/{id}
+            Method: put
+
+  PutProductFunction1536MB:
+    Type: AWS::Serverless::Function
+    Properties:
+      MemorySize: 1536
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Handler: nl.dyllan.PutProduct::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        PutRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products/1536/{id}
+            Method: put
+
+  PutProductFunction2048MB:
+    Type: AWS::Serverless::Function
+    Properties:
+      MemorySize: 2048
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Handler: nl.dyllan.PutProduct::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        PutRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products/2048/{id}
+            Method: put
+
+  ProductsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: 'PK'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'PK'
+          KeyType: 'HASH'
+      BillingMode: PAY_PER_REQUEST
+
+Outputs:
+  Api:
+    Description: "API Gateway endpoint URL for Prod stage for Dagger sample function"
+    Value: !Sub "https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/prod/products"

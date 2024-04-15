@@ -1,0 +1,16 @@
+version = 0.1
+[default.deploy.parameters]
+stack_name = "NormaalProject"
+resolve_s3 = true
+s3_prefix = "NormaalProject"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+
+[memory.deploy.parameters]
+stack_name = "MemoryProject"
+resolve_s3 = true
+s3_prefix = "MemoryProject"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
