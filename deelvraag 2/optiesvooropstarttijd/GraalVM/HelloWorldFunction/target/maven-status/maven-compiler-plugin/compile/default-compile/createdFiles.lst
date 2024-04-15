@@ -1,6 +1,0 @@
-nl\dyllan\entity\Product.class
-nl\dyllan\entity\Products.class
-nl\dyllan\dao\ProductDao.class
-nl\dyllan\PutProduct.class
-nl\dyllan\dao\DynamoProductDao.class
-nl\dyllan\dao\ProductMapper.class
