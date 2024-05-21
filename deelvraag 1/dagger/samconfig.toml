@@ -1,0 +1,36 @@
+version = 0.1
+[default.deploy.parameters]
+stack_name = "Dagger-Lambda"
+resolve_s3 = true
+s3_prefix = "Dagger-Lambda"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = []
+
+[snapstart.deploy.parameters]
+stack_name = "Dagger-snapstart-lambda"
+resolve_s3 = true
+s3_prefix = "Dagger-snapstart-lambda"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = []
+
+[native.deploy.parameters]
+stack_name = "Dagger-native-lambda"
+resolve_s3 = true
+s3_prefix = "Dagger-native-lambda"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = []
+
+[native-arm.deploy.parameters]
+stack_name = "Dagger-native-arm-lambda"
+resolve_s3 = true
+s3_prefix = "Dagger-native-arm-lambda"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = []

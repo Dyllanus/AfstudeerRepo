@@ -1,0 +1,81 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Example of deploying a GraalVM native image via AWS SAM
+
+Resources:
+#  CustomRuntimeGraalVM:
+#    Type: AWS::Serverless::Function
+#    Properties:
+#      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+#      FunctionName: CustomRuntimeGraalVM
+#      CodeUri: HelloWorldFunction/target/GraalVMCustomRuntimeLambda-1.0-native-zip.zip
+#      Handler: nl.dyllan.PutProduct::handleRequest
+#      Runtime: provided.al2
+#      Timeout: 20
+#      Architectures:
+#        - x86_64
+#      MemorySize: 512
+#      Policies:
+#        - DynamoDBCrudPolicy:
+#            TableName: !Ref ProductsTable
+#      Events:
+#        PutRequest:
+#          Type: Api
+#          Properties:
+#            RestApiId: !Ref GraalVMApi
+#            Path: /products/{id}
+#            Method: put
+#      Environment:
+#        Variables:
+#          PRODUCT_TABLE_NAME: !Ref ProductsTable
+
+  CustomRuntimeGraalVM:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      FunctionName: CustomRuntimeGraalVM-ARM
+      CodeUri: HelloWorldFunction/target/GraalVMCustomRuntimeLambda-1.0-native-zip.zip
+      Handler: nl.dyllan.PutProduct::handleRequest
+      Runtime: provided.al2
+      Timeout: 20
+      Architectures:
+        - arm64
+      MemorySize: 512
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        PutRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref GraalVMApi
+            Path: /products/{id}
+            Method: put
+      Environment:
+        Variables:
+          PRODUCT_TABLE_NAME: !Ref ProductsTable
+
+  GraalVMApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Name: GraalVM Custom runtime API
+
+  ProductsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: 'PK'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'PK'
+          KeyType: 'HASH'
+      BillingMode: PAY_PER_REQUEST
+
+
+
+Outputs:
+  Api:
+    Description: "API Gateway endpoint URL for Prod stage for Dagger sample function"
+    Value: !Sub "https://${GraalVMApi}.execute-api.${AWS::Region}.amazonaws.com/prod/products"

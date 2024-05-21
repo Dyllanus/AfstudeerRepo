@@ -1,0 +1,63 @@
+{
+  "family": "taskmate-boardservice-production-task-definition",
+  "containerDefinitions": [
+    {
+      "name": "taskmate-boardservice-production-container",
+      "image": "394164362913.dkr.ecr.us-east-1.amazonaws.com/taskmate-repository:boardservice-v51",
+      "cpu": 0,
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "entryPoint": [],
+      "command": [],
+      "environment": [
+        {
+          "name": "ALLOWED_ORIGINS",
+          "value": "http://d223xdb47nccb9.cloudfront.net"
+        },
+        {
+          "name": "SERVER_PORT",
+          "value": "8080"
+        },
+        {
+          "name": "DATABASE_PASSWORD",
+          "value": "#Tok@Tik>From_The545Clock"
+        },
+        {
+          "name": "SPRING_PROFILES_ACTIVE",
+          "value": "production"
+        },
+        {
+          "name": "USERSERVICE.BASEURL",
+          "value": "http://d223xdb47nccb9.cloudfront.net/userservice/api/users"
+        }
+      ],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/taskmate-boardservice-production-task-definition",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ],
+  "taskRoleArn": "arn:aws:iam::394164362913:role/LabRole",
+  "executionRoleArn": "arn:aws:iam::394164362913:role/LabRole",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "512",
+  "runtimePlatform": {
+    "operatingSystemFamily": "LINUX"
+  }
+}

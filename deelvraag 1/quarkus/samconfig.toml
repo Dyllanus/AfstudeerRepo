@@ -1,0 +1,40 @@
+version = 0.1
+[normal.deploy.parameters]
+stack_name = "Quarkus-products"
+resolve_s3 = true
+s3_prefix = "Quarkus-products"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+
+[normalARM.deploy.parameters]
+stack_name = "Quarkus-products-ARM"
+resolve_s3 = true
+s3_prefix = "Quarkus-products-ARM"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+
+[snapstart.deploy.parameters]
+stack_name = "Quarkus-snapstart"
+resolve_s3 = true
+s3_prefix = "Quarkus-snapstart"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+
+[nativeX86.deploy.parameters]
+stack_name = "Quarkus-nativex86"
+resolve_s3 = true
+s3_prefix = "Quarkus-nativex86"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+
+[nativeARM.deploy.parameters]
+stack_name = "Quarkus-nativeARM"
+resolve_s3 = true
+s3_prefix = "Quarkus-nativeARM"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []

@@ -1,0 +1,2 @@
+wanneer er een user verwijderd wordt bestaat het board nog
+wanneer er een board verwijderd wordt wordt deze niet bij de involved users weggehaald

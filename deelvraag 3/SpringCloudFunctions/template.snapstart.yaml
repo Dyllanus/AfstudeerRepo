@@ -1,0 +1,129 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Spring Cloud functions snapstart
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 20
+    MemorySize: 512
+    Tracing: Active
+    CodeUri: target/SpringCloudFunctions-1.0-SNAPSHOT-aws.jar
+    Handler: org.springframework.cloud.function.adapter.aws.FunctionInvoker::handleRequest
+    Runtime: java21
+    AutoPublishAlias: live
+    SnapStart:
+      ApplyOn: PublishedVersions
+    Environment:
+      Variables:
+        PRODUCT_TABLE_NAME: !Ref ProductsTable
+  Api:
+    TracingEnabled: true
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: Springboot 3 Snapstart
+    Description: Spring Cloud functions project voor het testen van de snelheid van Lambda's met snapstart
+    Author: Dyllan
+    SpdxLicenseId: Apache-2.0
+    Labels: ['tests']
+    SemanticVersion: 1.0.0
+
+Resources:
+  MyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Name: Spring cloud functions API (snapstart)
+
+  CreateProductHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Environment:
+        Variables:
+          SPRING_CLOUD_FUNCTION_DEFINITION: createProductHandler
+      Events:
+        PutRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products/{id}
+            Method: put
+
+  GetAllProductsHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Environment:
+        Variables:
+          SPRING_CLOUD_FUNCTION_DEFINITION: getAllProductsHandler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        PutRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products
+            Method: GET
+
+  GetProductByIdHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Environment:
+        Variables:
+          SPRING_CLOUD_FUNCTION_DEFINITION: getProductByIdHandler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        PutRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products/{id}
+            Method: GET
+
+  DeleteProductHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Environment:
+        Variables:
+          SPRING_CLOUD_FUNCTION_DEFINITION: deleteProductHandler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        PutRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products/{id}
+            Method: DELETE
+
+  ProductsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: 'PK'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'PK'
+          KeyType: 'HASH'
+      BillingMode: PAY_PER_REQUEST
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  Api:
+    Description: "API Gateway endpoint URL for Prod stage for Dagger sample function"
+    Value: !Sub "https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/prod/products"

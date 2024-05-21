@@ -1,0 +1,3 @@
+#!/bin/sh
+
+./serverless-springboot3-Products $_HANDLER

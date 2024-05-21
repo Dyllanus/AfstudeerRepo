@@ -1,0 +1,32 @@
+version = 0.1
+[default.deploy.parameters]
+stack_name = "spring-cloud-function"
+resolve_s3 = true
+s3_prefix = "spring-cloud-function"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+
+[snapstart.deploy.parameters]
+stack_name = "spring-cloud-function-snapstart"
+resolve_s3 = true
+s3_prefix = "spring-cloud-function-snapstart"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+
+[native.deploy.parameters]
+stack_name = "spring-cloud-function-native"
+resolve_s3 = true
+s3_prefix = "spring-cloud-function-native"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+
+[native-arm.deploy.parameters]
+stack_name = "spring-cloud-function-native-arm"
+resolve_s3 = true
+s3_prefix = "spring-cloud-function-native-arm"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []

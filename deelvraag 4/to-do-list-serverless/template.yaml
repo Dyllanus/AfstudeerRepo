@@ -1,0 +1,376 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  lambda-quarkus-snapstart
+  Sample SAM Template for quarkus with SnapStart
+
+Globals:
+  Function:
+    Tracing: Active
+    CodeUri: target/to-do-list-serverless-1.0-SNAPSHOT-aws.jar
+    Handler: io.quarkus.amazon.lambda.runtime.QuarkusStreamHandler::handleRequest
+    Runtime: java21
+    Timeout: 30
+    MemorySize: 512
+#    AutoPublishAlias: live
+#    SnapStart:
+#      ApplyOn: PublishedVersions
+    Environment:
+      Variables:
+        BOARD_TABLE_NAME: !Ref BoardTable
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: Serverless To do app
+    Description: To do App met boards
+    Author: Dyllan
+    SpdxLicenseId: Apache-2.0
+    Labels: ['tests']
+    SemanticVersion: 1.0.0
+
+Resources:
+  MyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      TracingEnabled: true
+      StageName: prod
+      Name: Quarkus SnapStart API
+
+  BoardTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: SK
+          AttributeType: S
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH
+        - AttributeName: SK
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+
+
+  CreateBoardFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      VersionDescription: Version 1
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Environment:
+        Variables:
+          quarkus_lambda_handler: createBoard
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref BoardTable
+      Events:
+        CreateBoard:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /boards
+            Method: POST
+
+  DeleteBoardFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Environment:
+        Variables:
+          quarkus_lambda_handler: deleteBoard
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref BoardTable
+      Events:
+        DeleteBoard:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /boards/{boardId}
+            Method: DELETE
+
+  GetAllBoardsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      VersionDescription: Version 1
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Environment:
+        Variables:
+          quarkus_lambda_handler: getAllBoards
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref BoardTable
+      Events:
+        GetAllBoards:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /boards
+            Method: GET
+
+  GetBoardFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      VersionDescription: Version 1
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Environment:
+        Variables:
+          quarkus_lambda_handler: getBoard
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref BoardTable
+      Events:
+        GetBoard:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /boards/{boardId}
+            Method: GET
+
+  UpdateBoardFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      VersionDescription: Version 1
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Environment:
+        Variables:
+          quarkus_lambda_handler: updateBoard
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref BoardTable
+      Events:
+        UpdateBoard:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /boards/{boardId}
+            Method: PATCH
+
+  SaveUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      VersionDescription: Version 1
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Environment:
+        Variables:
+          quarkus_lambda_handler: saveUser
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref BoardTable
+      Events:
+        SaveUser:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /users
+            Method: POST
+
+  GetUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      VersionDescription: Version 1
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Environment:
+        Variables:
+          quarkus_lambda_handler: getUser
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref BoardTable
+      Events:
+        GetUser:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /users/{username}
+            Method: GET
+
+  DeleteUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      VersionDescription: Version 1
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Environment:
+        Variables:
+          quarkus_lambda_handler: deleteUser
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref BoardTable
+      Events:
+        DeleteUser:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /users/{username}
+            Method: DELETE
+
+  CreateTagFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      VersionDescription: Version 1
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Environment:
+        Variables:
+          quarkus_lambda_handler: createTag
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref BoardTable
+      Events:
+        CreateTag:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /boards/{boardId}/tag
+            Method: POST
+
+  DeleteTagHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      VersionDescription: Version 1
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Environment:
+        Variables:
+          quarkus_lambda_handler: deleteTag
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref BoardTable
+      Events:
+        DeleteTag:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /boards/{boardId}/tag
+            Method: DELETE
+
+  CreateTaskListFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      VersionDescription: Version 1
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Environment:
+        Variables:
+          quarkus_lambda_handler: createTaskList
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref BoardTable
+      Events:
+        CreateTaskList:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /boards/{boardId}/tasklists
+            Method: POST
+
+  DeleteTaskListFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      VersionDescription: Version 1
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Environment:
+        Variables:
+          quarkus_lambda_handler: deleteTaskList
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref BoardTable
+      Events:
+        DeleteTaskList:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /boards/{boardId}/tasklists/{taskListId}
+            Method: DELETE
+
+  MoveTaskFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      VersionDescription: Version 1
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Environment:
+        Variables:
+          quarkus_lambda_handler: deleteTaskList
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref BoardTable
+      Events:
+        MoveTask:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /boards/{boardId}/tasklists/{taskListId}
+            Method: PATCH
+
+  UpdateTaskListFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      VersionDescription: Version 1
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Environment:
+        Variables:
+          quarkus_lambda_handler: updateTaskList
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref BoardTable
+      Events:
+        UpdateTaskList:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /boards/{boardId}/tasklists/{taskListId}
+            Method: PUT
+
+  CreateUpdateTaskFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      VersionDescription: Version 1
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Environment:
+        Variables:
+          quarkus_lambda_handler: createUpdateTask
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref BoardTable
+      Events:
+        CreateTask:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /boards/{boardId}/tasklists/{taskListId}/tasks
+            Method: CREATE
+
+        UpdateTask:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /boards/{boardId}/tasklists/{taskListId}/tasks
+            Method: PUT
+
+  DeleteTaskFunctions:
+    Type: AWS::Serverless::Function
+    Properties:
+      VersionDescription: Version 1
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Environment:
+        Variables:
+          quarkus_lambda_handler: deleteTaskList
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref BoardTable
+      Events:
+        CreateTask:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /boards/{boardId}/tasklists/{taskListId}/tasks
+            Method: CREATE
+
+        UpdateTask:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /boards/{boardId}/tasklists/{taskListId}/tasks/{taskId}
+            Method: DELETE
+
+
+Outputs:
+  ApiEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage for Quarkus sample function"
+    Value: !Sub "https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/prod"

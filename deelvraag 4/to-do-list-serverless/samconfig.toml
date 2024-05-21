@@ -1,0 +1,8 @@
+version = 0.1
+[default.deploy.parameters]
+stack_name = "to-do-list-serverless"
+resolve_s3 = true
+s3_prefix = "to-do-list-serverless"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []

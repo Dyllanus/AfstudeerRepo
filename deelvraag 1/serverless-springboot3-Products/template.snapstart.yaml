@@ -1,0 +1,63 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Spring boot 3 snapstart
+
+Globals:
+  Function:
+    Timeout: 20
+    MemorySize: 512
+    Tracing: Active
+    CodeUri: target/serverless-springboot3-Products-0.0.1-SNAPSHOT-aws.jar
+    Handler: nl.dyllan.StreamLambdaHandler
+    Runtime: java21
+    AutoPublishAlias: live
+    SnapStart:
+      ApplyOn: PublishedVersions
+    Environment:
+      Variables:
+        PRODUCT_TABLE_NAME: !Ref ProductsTable
+  Api:
+    EndpointConfiguration: REGIONAL
+    TracingEnabled: true
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: Springboot 3 Snapstart
+    Description: Springboot 3 project voor het testen van de snelheid van Lambda's met snapstart
+    Author: Dyllan
+    SpdxLicenseId: Apache-2.0
+    Labels: ['tests']
+    SemanticVersion: 1.0.0
+
+Resources:
+  ProductsRestFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        HttpApiEvent:
+          Type: HttpApi
+          Properties:
+            TimeoutInMillis: 20000
+            PayloadFormatVersion: '1.0'
+
+
+  ProductsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: 'PK'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'PK'
+          KeyType: 'HASH'
+      BillingMode: PAY_PER_REQUEST
+
+Outputs:
+  SpringBootPetStoreApi:
+    Description: URL for application
+    Value: !Sub 'https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/products'

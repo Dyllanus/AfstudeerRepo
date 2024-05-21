@@ -1,0 +1,9 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: "taskmate-userservice-production-task-definition"
+        LoadBalancerInfo:
+          ContainerName: "taskmate-userservice-production-container"
+          ContainerPort: 9090

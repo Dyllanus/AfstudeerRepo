@@ -1,0 +1,101 @@
+{
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:394164362913:task-definition/taskmate-boardservice-task-definition:2",
+  "containerDefinitions": [
+    {
+      "name": "taskmate-boardservice-container",
+      "cpu": 256,
+      "portMappings": [
+        {
+          "name": "taskmate-boardservice-container-8080-tcp",
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "essential": true,
+      "environment": [
+        {
+          "name": "ALLOWED_ORIGINS",
+          "value": "http://dzbs9sdv3t2g1.cloudfront.net"
+        },
+        {
+          "name": "SERVER_PORT",
+          "value": "8080"
+        },
+        {
+          "name": "DATABASE_PASSWORD",
+          "value": "*Kling%$Klang56"
+        },
+        {
+          "name": "SPRING_PROFILES_ACTIVE",
+          "value": "staging"
+        },
+        {
+          "name": "USERSERVICE.BASEURL",
+          "value": "https://dzbs9sdv3t2g1.cloudfront.net/userservice/api/users"
+        }
+      ],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/taskmate-boardservice-task-definition",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        },
+        "secretOptions": []
+      }
+    }
+  ],
+  "family": "taskmate-boardservice-task-definition",
+  "taskRoleArn": "arn:aws:iam::394164362913:role/LabRole",
+  "executionRoleArn": "arn:aws:iam::394164362913:role/LabRole",
+  "networkMode": "awsvpc",
+  "revision": 2,
+  "volumes": [],
+  "status": "ACTIVE",
+  "requiresAttributes": [
+    {
+      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+    },
+    {
+      "name": "ecs.capability.execution-role-awslogs"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.task-iam-role"
+    },
+    {
+      "name": "ecs.capability.execution-role-ecr-pull"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+      "name": "ecs.capability.task-eni"
+    }
+  ],
+  "placementConstraints": [],
+  "compatibilities": [
+    "EC2",
+    "FARGATE"
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "512",
+  "runtimePlatform": {
+    "operatingSystemFamily": "LINUX"
+  },
+  "registeredAt": "2023-10-10T19:29:08.209Z",
+  "registeredBy": "arn:aws:sts::394164362913:assumed-role/voclabs/user2781365=Salverius,_Dyllan",
+  "tags": []
+}

@@ -1,0 +1,119 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  lambda-dagger-sample
+  Sample SAM Template for lambda-dagger
+
+Globals:
+  Function:
+    AutoPublishAlias: live
+    Tracing: Active
+    CodeUri: target/dagger-lambda-function-1.0.0-SNAPSHOT.jar
+    Runtime: java21
+    SnapStart:
+      ApplyOn: PublishedVersions
+    Timeout: 30
+    MemorySize: 512
+    Environment:
+      Variables:
+        PRODUCT_TABLE_NAME: !Ref ProductsTable
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: Dagger Snapstart
+    Description: Dagger project voor het testen van de snelheid van Lambda's met snapstart
+    Author: Dyllan
+    SpdxLicenseId: Apache-2.0
+    Labels: ['tests']
+    SemanticVersion: 1.0.0
+
+Resources:
+  MyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Name: Dagger API (Snapstart)
+
+  GetProductByIdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      VersionDescription: Version 1
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Handler: nl.dyllan.handler.GetProductByIdHandler::handleRequest
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        GetRequestById:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products/{id}
+            Method: get
+
+  GetProductsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      VersionDescription: Version 1
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Handler: nl.dyllan.handler.GetAllProductsHandler::handleRequest
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        GetRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products
+            Method: get
+
+  PutProductFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      VersionDescription: Version 1
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Handler: nl.dyllan.handler.CreateProductHandler::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        PutRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products/{id}
+            Method: put
+
+  DeleteProductFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      VersionDescription: Version 1
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Handler: nl.dyllan.handler.DeleteProductHandler::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        PutRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products/{id}
+            Method: delete
+
+  ProductsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: 'PK'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'PK'
+          KeyType: 'HASH'
+      BillingMode: PAY_PER_REQUEST
+
+Outputs:
+  DaggerApiEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage for Dagger sample function"
+    Value: !Sub "https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/prod/products"

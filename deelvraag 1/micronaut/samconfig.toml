@@ -1,0 +1,40 @@
+version = 0.1
+[default.deploy.parameters]
+stack_name = "Micronaut-products"
+resolve_s3 = true
+s3_prefix = "Micronaut-products"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+
+[normalARM.deploy.parameters]
+stack_name = "Micronaut-products-ARM"
+resolve_s3 = true
+s3_prefix = "Micronaut-products-ARM"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+
+[snapstart.deploy.parameters]
+stack_name = "Micronaut-snapstart"
+resolve_s3 = true
+s3_prefix = "Micronaut-snapstart"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+
+[nativeX86.deploy.parameters]
+stack_name = "Micronaut-nativex86"
+resolve_s3 = true
+s3_prefix = "Micronaut-nativex86"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+
+[nativeARM.deploy.parameters]
+stack_name = "Micronaut-nativeARM"
+resolve_s3 = true
+s3_prefix = "Micronaut-nativeARM"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []

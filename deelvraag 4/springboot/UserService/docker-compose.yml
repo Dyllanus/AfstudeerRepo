@@ -1,0 +1,14 @@
+version: '3.9'
+services:
+  userservice-db:
+    image: 'postgres:14-alpine'
+    restart: always
+    container_name: userservice-db
+    ports:
+      - "15432:5432"
+    environment:
+      - POSTGRES_PASSWORD=userservice
+      - POSTGRES_USER=userservice
+      - POSTGRES_DB=userservice
+    volumes:
+      - ./development/postgres:/var/lib/postgresql/data

@@ -1,0 +1,83 @@
+[
+    {
+        "name": "nl.dyllan.handler.CreateProductHandler",
+        "allDeclaredConstructors": true,
+        "allPublicConstructors": true,
+        "allDeclaredMethods": true,
+        "allPublicMethods": true,
+        "allDeclaredClasses": true,
+        "allPublicClasses": true
+    },
+    {
+        "name": "nl.dyllan.handler.DeleteProductHandler",
+        "allDeclaredConstructors": true,
+        "allPublicConstructors": true,
+        "allDeclaredMethods": true,
+        "allPublicMethods": true,
+        "allDeclaredClasses": true,
+        "allPublicClasses": true
+    },
+    {
+        "name": "nl.dyllan.handler.GetAllProductsHandler",
+        "allDeclaredConstructors": true,
+        "allPublicConstructors": true,
+        "allDeclaredMethods": true,
+        "allPublicMethods": true,
+        "allDeclaredClasses": true,
+        "allPublicClasses": true
+    },
+    {
+        "name": "nl.dyllan.handler.GetProductByIdHandler",
+        "allDeclaredConstructors": true,
+        "allPublicConstructors": true,
+        "allDeclaredMethods": true,
+        "allPublicMethods": true,
+        "allDeclaredClasses": true,
+        "allPublicClasses": true
+    },
+    {
+        "name": "nl.dyllan.entity.Product",
+        "allDeclaredConstructors": true,
+        "allPublicConstructors": true,
+        "allDeclaredMethods": true,
+        "allPublicMethods": true,
+        "allDeclaredClasses": true,
+        "allPublicClasses": true
+    },
+    {
+        "name": "nl.dyllan.entity.Products",
+        "allDeclaredConstructors": true,
+        "allPublicConstructors": true,
+        "allDeclaredMethods": true,
+        "allPublicMethods": true,
+        "allDeclaredClasses": true,
+        "allPublicClasses": true
+    },
+    {
+        "name": "nl.dyllan.dao.DynamoProductDao",
+        "allDeclaredConstructors": true,
+        "allPublicConstructors": true,
+        "allDeclaredMethods": true,
+        "allPublicMethods": true,
+        "allDeclaredClasses": true,
+        "allPublicClasses": true
+    },
+    {
+        "name": "nl.dyllan.dao.ProductDao",
+        "allDeclaredConstructors": true,
+        "allPublicConstructors": true,
+        "allDeclaredMethods": true,
+        "allPublicMethods": true,
+        "allDeclaredClasses": true,
+        "allPublicClasses": true
+    },
+    {
+        "name": "nl.dyllan.dao.ProductMapper",
+        "allDeclaredConstructors": true,
+        "allPublicConstructors": true,
+        "allDeclaredMethods": true,
+        "allPublicMethods": true,
+        "allDeclaredClasses": true,
+        "allPublicClasses": true
+    }
+]

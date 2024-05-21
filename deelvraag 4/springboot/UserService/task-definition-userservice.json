@@ -1,0 +1,95 @@
+{
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:394164362913:task-definition/taskmate-userservice-task-definition:8",
+  "containerDefinitions": [
+    {
+      "name": "taskmate-userservice-container",
+      "cpu": 256,
+      "portMappings": [
+        {
+          "name": "taskmate-userservice-container-9090-tcp",
+          "containerPort": 9090,
+          "hostPort": 9090,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "environment": [
+        {
+          "name": "ALLOWED_ORIGINS",
+          "value": "http://dzbs9sdv3t2g1.cloudfront.net"
+        },
+        {
+          "name": "SERVER_PORT",
+          "value": "9090"
+        },
+        {
+          "name": "DATABASE_PASSWORD",
+          "value": "&choo^choo&57D501"
+        },
+        {
+          "name": "SPRING_PROFILES_ACTIVE",
+          "value": "staging"
+        }
+      ],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/taskmate-userservice-task-definition",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ],
+  "family": "taskmate-userservice-task-definition",
+  "taskRoleArn": "arn:aws:iam::394164362913:role/LabRole",
+  "executionRoleArn": "arn:aws:iam::394164362913:role/LabRole",
+  "networkMode": "awsvpc",
+  "revision": 8,
+  "volumes": [],
+  "status": "ACTIVE",
+  "requiresAttributes": [
+    {
+      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+    },
+    {
+      "name": "ecs.capability.execution-role-awslogs"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.task-iam-role"
+    },
+    {
+      "name": "ecs.capability.execution-role-ecr-pull"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+      "name": "ecs.capability.task-eni"
+    }
+  ],
+  "placementConstraints": [],
+  "compatibilities": [
+    "EC2",
+    "FARGATE"
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "512",
+  "runtimePlatform": {
+    "operatingSystemFamily": "LINUX"
+  },
+  "registeredAt": "2023-10-10T17:11:22.639Z",
+  "registeredBy": "arn:aws:sts::394164362913:assumed-role/voclabs/user2781365=Salverius,_Dyllan",
+  "tags": []
+}

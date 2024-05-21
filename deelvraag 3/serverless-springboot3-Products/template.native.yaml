@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  lambda-micronaut-sample-native
+  Sample SAM Template for lambda-micronaut-native
+
+Globals:
+  Function:
+    Tracing: Active
+    CodeUri: target/serverless-springboot3-Products-0.0.1-SNAPSHOT-native-zip.zip
+    Handler: nl.dyllan.StreamLambdaHandler
+    Runtime: provided.al2023
+    Timeout: 30
+    MemorySize: 512
+    Environment:
+      Variables:
+        PRODUCT_TABLE_NAME: !Ref ProductsTable
+
+
+Resources:
+  ProductsRestFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        HttpApiEvent:
+          Type: HttpApi
+          Properties:
+            TimeoutInMillis: 20000
+            PayloadFormatVersion: '1.0'
+
+
+  ProductsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: 'PK'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'PK'
+          KeyType: 'HASH'
+      BillingMode: PAY_PER_REQUEST
+
+Outputs:
+  SpringBootPetStoreApi:
+    Description: URL for application
+    Value: !Sub 'https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/products'

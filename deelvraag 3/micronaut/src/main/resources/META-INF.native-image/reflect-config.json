@@ -1,0 +1,74 @@
+[
+    {
+        "name": "nl.dyllan.handler.CreateProductHandler",
+        "allDeclaredConstructors": true,
+        "allPublicConstructors": true,
+        "allDeclaredMethods": true,
+        "allPublicMethods": true,
+        "allDeclaredClasses": true,
+        "allPublicClasses": true
+    },
+    {
+        "name": "nl.dyllan.handler.DeleteProductHandler",
+        "allDeclaredConstructors": true,
+        "allPublicConstructors": true,
+        "allDeclaredMethods": true,
+        "allPublicMethods": true,
+        "allDeclaredClasses": true,
+        "allPublicClasses": true
+    },
+    {
+        "name": "nl.dyllan.handler.GetAllProductsHandler",
+        "allDeclaredConstructors": true,
+        "allPublicConstructors": true,
+        "allDeclaredMethods": true,
+        "allPublicMethods": true,
+        "allDeclaredClasses": true,
+        "allPublicClasses": true
+    },
+    {
+        "name": "nl.dyllan.handler.GetProductByIdHandler",
+        "allDeclaredConstructors": true,
+        "allPublicConstructors": true,
+        "allDeclaredMethods": true,
+        "allPublicMethods": true,
+        "allDeclaredClasses": true,
+        "allPublicClasses": true
+    },
+    {
+        "name" : "org.apache.commons.logging.impl.LogFactoryImpl",
+        "allDeclaredConstructors" : true,
+        "allPublicConstructors" : true,
+        "allDeclaredMethods" : true,
+        "allPublicMethods" : true,
+        "allDeclaredClasses" : true,
+        "allPublicClasses" : true
+    },
+    {
+        "name" : "java.lang.String",
+        "allDeclaredConstructors" : true,
+        "allPublicConstructors" : true,
+        "allDeclaredMethods" : true,
+        "allPublicMethods" : true,
+        "allDeclaredClasses" : true,
+        "allPublicClasses" : true
+    },
+    {
+        "name" : "org.apache.commons.logging.LogFactory",
+        "allDeclaredConstructors" : true,
+        "allPublicConstructors" : true,
+        "allDeclaredMethods" : true,
+        "allPublicMethods" : true,
+        "allDeclaredClasses" : true,
+        "allPublicClasses" : true
+    },
+    {
+        "name" : "org.apache.commons.logging.impl.SimpleLog",
+        "allDeclaredConstructors" : true,
+        "allPublicConstructors" : true,
+        "allDeclaredMethods" : true,
+        "allPublicMethods" : true,
+        "allDeclaredClasses" : true,
+        "allPublicClasses" : true
+    }
+]

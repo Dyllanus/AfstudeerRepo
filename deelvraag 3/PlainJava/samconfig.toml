@@ -1,0 +1,32 @@
+version = 0.1
+[default.deploy.parameters]
+stack_name = "Plain-Java-Lambda"
+resolve_s3 = true
+s3_prefix = "Plain-Java-Lambda"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+
+[snapstart.deploy.parameters]
+stack_name = "Plain-Java-snap-Lambda"
+resolve_s3 = true
+s3_prefix = "Plain-Java-snap-Lambda"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+
+[native.deploy.parameters]
+stack_name = "Plain-Java-native-Lambda"
+resolve_s3 = true
+s3_prefix = "Plain-Java-native-Lambda"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+
+[native-arm.deploy.parameters]
+stack_name = "Plain-Java-native-arm-Lambda"
+resolve_s3 = true
+s3_prefix = "Plain-Java-native-arm-Lambda"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
